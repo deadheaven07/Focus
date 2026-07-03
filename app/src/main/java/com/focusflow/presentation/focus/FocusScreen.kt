@@ -1,12 +1,13 @@
 package com.focusflow.presentation.focus
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.focusflow.domain.model.FocusSessionType
@@ -19,6 +20,24 @@ fun FocusScreen(
 ) {
     val timeLeft by viewModel.timeLeft.collectAsState()
     val isRunning by viewModel.isRunning.collectAsState()
+    val initialTime by viewModel.currentTotalDuration.collectAsState()
+
+    val progress by animateFloatAsState(
+        targetValue = if (initialTime > 0) timeLeft.toFloat() / initialTime else 0f,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
+        label = "Timer Progress"
+    )
+
+    val infiniteTransition = rememberInfiniteTransition(label = "Pulse")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = if (isRunning) 1.05f else 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "Pulse Scale"
+    )
 
     Scaffold(
         topBar = { 
@@ -42,10 +61,21 @@ fun FocusScreen(
         ) {
             val minutes = (timeLeft / 1000) / 60
             val seconds = (timeLeft / 1000) % 60
-            Text(
-                text = String.format("%02d:%02d", minutes, seconds),
-                style = MaterialTheme.typography.displayLarge
-            )
+
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.size(250.dp)) {
+                CircularProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.fillMaxSize(),
+                    strokeWidth = 8.dp,
+                    color = if (isRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                )
+                Text(
+                    text = String.format("%02d:%02d", minutes, seconds),
+                    style = MaterialTheme.typography.displayLarge,
+                    modifier = Modifier.scale(scale)
+                )
+            }
             
             Spacer(modifier = Modifier.height(32.dp))
 

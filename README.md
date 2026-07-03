@@ -1,294 +1,127 @@
-# 🚀 FocusFlow – Habit Builder & Focus Tracker
+# 🌊 FocusFlow
 
-FocusFlow is a modern Android productivity application designed to help users build consistent habits, improve focus, and maintain long-term productivity through structured routines and focus sessions.
+**Elevate your productivity with intentional habit building and focused work sessions.**
 
-The application combines **habit tracking**, **focus management**, **smart reminders**, and **productivity insights** into a single experience while following scalable Android engineering practices used in production environments.
-
----
-
-## ✨ Features
-
-### 📌 Habit Management
-
-- Create, update, and delete habits
-- Organize habits by categories:
-  - 🏃 Health
-  - 📚 Study
-  - 💼 Work
-  - 🧘 Meditation
-  - 🏋 Fitness
-  - 📖 Reading
-- Daily and weekly progress tracking
-- Habit completion history
-- Streak tracking system
-- Progress visualization
+FocusFlow is a premium Android application designed for users who want to master their routines. By combining scientifically-backed productivity techniques like Pomodoro with modern habit-tracking mechanics, FocusFlow helps you turn goals into lifelong streaks.
 
 ---
 
-### 📊 Dashboard
+## 🌟 Key Features
 
-Get a quick overview of your productivity:
+### 📅 Advanced Habit Tracking
+- **Smart Streaks:** Stay motivated with visual progress indicators and daily reminders.
+- **Categorization:** Organize your life into Health, Study, Work, and more.
+- **Offline First:** Seamlessly manage habits even without an internet connection.
 
-- Today's habits
-- Completed habits
-- Pending habits
-- Completion percentage
-- Active streak count
-- Daily progress indicators
+### 🧘 Intentional Focus Sessions
+- **Multiple Modes:** Choose between Pomodoro, Deep Work, or Custom sessions.
+- **Background Persistence:** A robust Foreground Service ensures your timer never stops, providing real-time updates via notifications.
+- **Live Visuals:** Experience your focus with dynamic progress bars and pulsing timer animations.
 
----
+### 🎨 Personalization & Experience
+- **Adaptive Theming:** Support for Light, Dark, and System Default modes, persisted via Jetpack DataStore.
+- **Fluid Motion:** High-quality transitions and item animations powered by Jetpack Compose.
+- **Modern UI:** Built entirely with Material 3 for a clean, accessible experience.
 
-### 🔐 Authentication
-
-Integrated with Firebase Authentication:
-
-- Email & Password Login
-- User Registration
-- Session Persistence
-- Logout functionality
-- Automatic login for returning users
+### 📊 Insightful Analytics
+- **Firebase Integration:** Track your growth with detailed event analytics.
+- **Productivity Scoring:** Understand your performance with our rule-based habit scoring logic.
 
 ---
 
-### ⏳ Focus System
-
-Built to support deep work and intentional focus.
-
-Supported session types:
-
-- 🍅 Pomodoro (25 min focus + 5 min break)
-- 💻 Deep Work Session
-- 🧘 Silent Meditation Session
-- 📚 Study Session
-- ⚙ Custom Session
-
-Features:
-
-- Start / Pause / Resume / Stop
-- Background execution
-- Notification support
-- Session tracking
-- Focus history persistence
-
----
-
-### 🔔 Smart Reminders & Engagement
-
-Built using WorkManager and Notification Channels:
-
-- Daily reminders
-- Streak reminders
-- Missed habit reminders
-- Weekly summaries
-- User engagement notifications
-
-Examples:
-
-```text
-🎯 Time for your Study habit
-
-🔥 You're one step away from maintaining your streak
-
-🧘 Meditation session completed
-```
-
----
-
-### 🧠 Smart Habit Insights
-
-FocusFlow uses a rule-based recommendation system to generate productivity insights.
-
-Scoring Logic:
-
-```kotlin
-habitScore =
-0.4 * completionRate +
-0.3 * streakStrength +
-0.2 * focusSessions +
-0.1 * consistency
-```
-
-Generated insights include:
-
-- Peak productivity periods
-- Most consistent habit categories
-- Focus session trends
-- Completion patterns
-
----
-
-### 📈 Analytics
-
-Integrated with Firebase Analytics for tracking user interactions and feature engagement.
-
-Tracked events:
-
-- `habit_created`
-- `habit_completed`
-- `focus_started`
-- `focus_completed`
-- `session_duration`
-- `category_selected`
-- `reminder_opened`
-- `streak_maintained`
-
----
-
-## 🏗 Architecture
-
-The project follows **MVVM + Clean Architecture** with proper separation of concerns.
-
-```text
-presentation/
-    habits/
-    focus/
-    dashboard/
-    profile/
-    authentication/
-
-domain/
-    model/
-    repository/
-    usecase/
-
-data/
-    remote/
-        api/
-        dto/
-
-    local/
-        database/
-        dao/
-        entity/
-
-    mapper/
-    repository/
-
-core/
-    util/
-    notification/
-    timer/
-
-di/
-```
-
----
-
-## ⚙ Tech Stack
+## 🛠 Tech Stack
 
 | Category | Technology |
-|------------|------------|
-| Language | Kotlin |
-| UI | Jetpack Compose + Material 3 |
-| Architecture | MVVM + Clean Architecture |
-| Dependency Injection | Hilt |
-| Local Database | Room Database |
-| Networking | Retrofit |
-| Background Tasks | WorkManager |
-| Authentication | Firebase Authentication |
-| Analytics | Firebase Analytics |
-| State Management | Coroutines + Flow |
-| Navigation | Navigation Compose |
+| :--- | :--- |
+| **Language** | Kotlin (Coroutines + Flow) |
+| **UI Framework** | Jetpack Compose (Material 3) |
+| **Architecture** | Clean Architecture + MVVM |
+| **DI** | Hilt |
+| **Persistence** | Room (Local DB) + DataStore (Preferences) |
+| **Background** | WorkManager + Foreground Services |
+| **Cloud** | Firebase (Auth + Analytics) |
 
 ---
 
-## 📱 Screens
+## 🏗 Architecture & Project Structure
 
-- 🏠 Dashboard Screen
-- 📌 Habit Management Screen
-- ⏳ Focus Session Screen
-- 🔐 Login / Signup Screen
-- 📈 Analytics Screen
-- 👤 Profile Screen
-- 🔔 Notification & Reminder Screens
+FocusFlow follows **Clean Architecture** principles combined with **MVVM (Model-View-ViewModel)**. This ensures a clear separation of concerns, making the codebase scalable, maintainable, and highly testable.
 
----
+### 📂 Directory Structure
 
-## 🔥 Highlights
+```text
+app/src/main/java/com/focusflow/
+├── core/               # App-wide utilities, base classes, and timing logic
+│   ├── timer/          # Foreground Service for background timing
+│   └── util/           # Analytics, Notifications, and String helpers
+├── data/               # Implementation layer (Local DB, API, Repositories)
+│   ├── local/          # Room DB, DAOs, and Entities
+│   ├── remote/         # Firebase integration and API clients
+│   ├── repository/     # Concrete implementations of Domain repositories
+│   └── mapper/         # Converters between Data and Domain models
+├── di/                 # Hilt Modules for dependency injection
+├── domain/             # Pure Kotlin Business Logic (Layer independent of Android)
+│   ├── model/          # Domain models (POJOs)
+│   ├── repository/     # Interface definitions for data access
+│   └── usecase/        # Single-responsibility business logic classes
+└── presentation/       # UI Layer (Jetpack Compose + ViewModels)
+    ├── habits/         # Habit tracking feature
+    ├── focus/          # Pomodoro timer and history
+    ├── profile/        # User profile and theme settings
+    ├── dashboard/      # Unified overview of daily progress
+    ├── theme/          # Material 3 Design System implementation
+    └── util/           # Navigation and Compose-specific utilities
+```
 
-✔ Production-style Android architecture  
-✔ Offline-first local persistence  
-✔ Background task execution using WorkManager  
-✔ Firebase Authentication integration  
-✔ Analytics event tracking  
-✔ Scalable state management with StateFlow  
-✔ Modular and reusable code structure  
-✔ Jetpack Compose UI system  
-✔ Notification-driven engagement system  
+### 📐 Architecture
+
+```text
+                               ┌─────────────────────────┐
+                               │      Presentation       │
+                               │ (Compose, ViewModels)   │
+                               └───────────┬─────────────┘
+                                           │
+                                           ▼
+      ┌────────────────┐       ┌─────────────────────────┐       ┌────────────────┐
+      │      Data      │──────▶│         Domain          │◀──────│      Core      │
+      │ (Room, Firebase)│       │ (UseCases, Repo Interfaces)     │ (Utilities,    │
+      └────────────────┘       └─────────────────────────┘       │  Timer Service)│
+                                                                 └────────────────┘
+
+      Flow: UI Event ──▶ ViewModel ──▶ UseCase ──▶ Repository Interface ──▶ Repository Impl ──▶ DB/API
+```
+
+### 🧱 Architectural Layers
+
+1.  **Domain Layer (The Core)**: Contains the application's business logic. It is independent of any other layer and contains **Use Cases** that represent the "What the app does."
+2.  **Data Layer**: Responsible for managing data from different sources (Room, Firebase, DataStore). It implements the repository interfaces defined in the Domain layer.
+3.  **Presentation Layer**: Responsible for showing information to the user. It uses **Jetpack Compose** for the UI and **StateFlow** within ViewModels to manage UI state in a lifecycle-aware manner.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+- Android Studio Koala+
+- JDK 17
+- Firebase project credentials (`google-services.json`)
 
-Make sure you have:
+### Installation
+1. **Clone the repo:**
 
-- Android Studio Koala or newer
-- Android SDK 24+
-- Firebase Project setup
-- Kotlin installed
-
----
-
-### Clone Repository
-
-```bash
-git clone https://github.com/yourusername/FocusFlow.git
-```
-
-Move into project:
-
-```bash
-cd FocusFlow
-```
+2. **Setup Firebase:**
+   Place your `google-services.json` in the `app/` directory.
+3. **Build & Run:**
+   Open in Android Studio and hit **Run**, or use:
+   ```bash
+   ./gradlew installDebug
+   ```
 
 ---
 
-### Firebase Setup
+## 👨‍💻 Author
 
-1. Create a Firebase project
-
-2. Download:
-
-```text
-google-services.json
-```
-
-3. Place the file inside:
-
-```text
-app/google-services.json
-```
-
-4. Enable:
-
-- Firebase Authentication → Email/Password
-- Firebase Analytics
+**Harsh Raghuwanshi**  
 
 ---
-
-### Build & Run
-
-Run from terminal:
-
-```bash
-./gradlew installDebug
-```
-
-Or run directly from Android Studio:
-
-```text
-Run → Run 'app'
-```
-
----
-
-
-<div align="center">
-
-### 👨‍💻 Built by Harsh Raghuwanshi
-
-Android Developer • Kotlin • Jetpack Compose • Clean Architecture
-
-</div>
+*FocusFlow – Flow into your focus.*

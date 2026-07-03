@@ -2,6 +2,7 @@ package com.focusflow.presentation.authentication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.focusflow.core.util.InputValidator
 import com.focusflow.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,15 @@ class LoginViewModel @Inject constructor(
     val state: StateFlow<LoginState> = _state.asStateFlow()
 
     fun login(email: String, password: String) {
+        if (!InputValidator.isValidEmail(email)) {
+            _state.update { it.copy(error = "Invalid email address") }
+            return
+        }
+        if (!InputValidator.isValidPassword(password)) {
+            _state.update { it.copy(error = "Password must be at least 6 characters") }
+            return
+        }
+
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             val result = authRepository.login(email, password)
@@ -36,6 +46,15 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signUp(email: String, password: String) {
+        if (!InputValidator.isValidEmail(email)) {
+            _state.update { it.copy(error = "Invalid email address") }
+            return
+        }
+        if (!InputValidator.isValidPassword(password)) {
+            _state.update { it.copy(error = "Password must be at least 6 characters") }
+            return
+        }
+
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             val result = authRepository.signUp(email, password)
@@ -50,6 +69,18 @@ class LoginViewModel @Inject constructor(
             )
         }
     }
+
+    fun onEvent(event: LoginEvent) {
+        when (event) {
+            is LoginEvent.ErrorDismissed -> {
+                _state.update { it.copy(error = null) }
+            }
+        }
+    }
+}
+
+sealed class LoginEvent {
+    object ErrorDismissed : LoginEvent()
 }
 
 data class LoginState(

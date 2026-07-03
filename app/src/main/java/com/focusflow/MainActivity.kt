@@ -3,6 +3,8 @@ package com.focusflow
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -38,8 +40,9 @@ class MainActivity : ComponentActivity() {
             // grab the user session so we know where to start
             val mainViewModel: MainViewModel = hiltViewModel()
             val currentUser by mainViewModel.currentUser.collectAsState()
+            val isDarkMode by mainViewModel.isDarkMode.collectAsState()
 
-            FocusFlowTheme {
+            FocusFlowTheme(darkTheme = isDarkMode ?: androidx.compose.foundation.isSystemInDarkTheme()) {
                 val navController = rememberNavController()
                 
                 Scaffold(
@@ -87,7 +90,31 @@ class MainActivity : ComponentActivity() {
 
                         NavHost(
                             navController = navController,
-                            startDestination = startDestination
+                            startDestination = startDestination,
+                            enterTransition = {
+                                slideIntoContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                    animationSpec = tween(700)
+                                ) + fadeIn(animationSpec = tween(700))
+                            },
+                            exitTransition = {
+                                slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                    animationSpec = tween(700)
+                                ) + fadeOut(animationSpec = tween(700))
+                            },
+                            popEnterTransition = {
+                                slideIntoContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                    animationSpec = tween(700)
+                                ) + fadeIn(animationSpec = tween(700))
+                            },
+                            popExitTransition = {
+                                slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                                    animationSpec = tween(700)
+                                ) + fadeOut(animationSpec = tween(700))
+                            }
                         ) {
                             composable(Screen.Login.route) {
                                 LoginScreen(

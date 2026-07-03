@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">FocusFlow</string>
+    <string name="profile">Profile</string>
+    <string name="guest_user">Guest User</string>
+    <string name="focusflow_member">FocusFlow Member</string>
+    <string name="habits">Habits</string>
+    <string name="sessions">Sessions</string>
+    <string name="today">Today</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="app_theme">App Theme</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="log_out">Log Out</string>
+    <string name="app_version">Version 1.0.0</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="system_default">System Default</string>
 </resources>

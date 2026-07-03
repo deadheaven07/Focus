@@ -1,5 +1,8 @@
 package com.focusflow.presentation.habits
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.focusflow.domain.model.Habit
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HabitListScreen(
     viewModel: HabitViewModel = hiltViewModel(),
@@ -48,12 +51,17 @@ fun HabitListScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(state.habits) { habit ->
-                    HabitItem(
-                        habit = habit,
-                        onToggle = { viewModel.onToggleHabit(habit) },
-                        onDelete = { viewModel.deleteHabit(habit) }
-                    )
+                items(
+                    items = state.habits,
+                    key = { it.id ?: 0 }
+                ) { habit ->
+                    Box(modifier = Modifier.animateItemPlacement(animationSpec = tween(500))) {
+                        HabitItem(
+                            habit = habit,
+                            onToggle = { viewModel.onToggleHabit(habit) },
+                            onDelete = { viewModel.deleteHabit(habit) }
+                        )
+                    }
                 }
             }
         }

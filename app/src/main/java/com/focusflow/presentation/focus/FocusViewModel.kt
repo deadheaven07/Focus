@@ -31,6 +31,9 @@ class FocusViewModel @Inject constructor(
     val isRunning = _timerService.flatMapLatest { it?.isRunning ?: flowOf(false) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
+    val currentTotalDuration = _timerService.map { it?.timeLeft?.value ?: 0L }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0L)
+
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as FocusTimerService.TimerBinder

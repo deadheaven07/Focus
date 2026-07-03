@@ -7,9 +7,13 @@ import com.focusflow.data.local.dao.HabitDao
 import com.focusflow.data.local.database.FocusFlowDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.focusflow.data.repository.AuthRepositoryImpl
+import com.focusflow.data.repository.FocusRepositoryImpl
 import com.focusflow.data.repository.HabitRepositoryImpl
+import com.focusflow.data.repository.ThemeRepositoryImpl
 import com.focusflow.domain.repository.AuthRepository
+import com.focusflow.domain.repository.FocusRepository
 import com.focusflow.domain.repository.HabitRepository
+import com.focusflow.domain.repository.ThemeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,4 +62,14 @@ object AppModule {
     fun provideHabitRepository(dao: HabitDao): HabitRepository {
         return HabitRepositoryImpl(dao)
     }
+
+    @Provides
+    @Singleton
+    fun provideFocusRepository(dao: FocusSessionDao): FocusRepository {
+        return FocusRepositoryImpl(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideThemeRepository(impl: ThemeRepositoryImpl): ThemeRepository = impl
 }

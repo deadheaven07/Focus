@@ -35,14 +35,20 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { 
+                email = it
+                viewModel.onEvent(LoginEvent.ErrorDismissed)
+            },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { 
+                password = it
+                viewModel.onEvent(LoginEvent.ErrorDismissed)
+            },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
@@ -53,14 +59,14 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(8.dp))
         }
         Button(
-            onClick = { viewModel.login(email, password) },
+            onClick = { viewModel.login(email.trim(), password) },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !state.isLoading
+            enabled = !state.isLoading && email.isNotBlank() && password.isNotBlank()
         ) {
             if (state.isLoading) CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             else Text("Login")
         }
-        TextButton(onClick = { viewModel.signUp(email, password) }) {
+        TextButton(onClick = { viewModel.signUp(email.trim(), password) }) {
             Text("Create Account")
         }
     }
